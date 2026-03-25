@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Office Kit - AIで、経営の手間をやさしく整える。</title>
     <meta name="description" content="Office Kitは、AIを活用しながら、経営者が日々の業務で手を取られていることを、やさしく・実務的に整えていくサービスです。">
+    <script>
+        // HTTPで開かれた場合はHTTPSへ即時リダイレクトして「保護されていない通信」を回避します
+        (function () {
+            if (location.protocol === 'http:') {
+                location.replace('https://' + location.host + location.pathname + location.search + location.hash);
+            }
+        })();
+    </script>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
     <!-- OGP (Open Graph) -->
