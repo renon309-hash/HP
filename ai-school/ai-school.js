@@ -37,7 +37,7 @@
 
             event.preventDefault();
             if (anchor.classList.contains('js-cta')) {
-                trackEvent('ai_school_cta_click', { link_location: anchor.closest('footer') ? 'footer' : 'page' });
+                trackEvent('ai_school_apply_click', { link_location: anchor.closest('footer') ? 'footer' : 'page' });
             }
             const top = target.getBoundingClientRect().top + window.scrollY - navbar.offsetHeight;
             window.scrollTo({ top: top, behavior: 'smooth' });
@@ -78,7 +78,7 @@
             } catch (error) {
                 isSubmitting = false;
                 submitButton.disabled = false;
-                submitButton.textContent = '事前登録する';
+                submitButton.textContent = '参加を申し込む';
                 setError('送信できませんでした。時間をおいて再度お試しいただくか、info@office-kit.jp へご連絡ください。');
             }
         });
