@@ -424,6 +424,24 @@ ul {
     line-height: 1.7;
 }
 
+.service-link {
+    color: inherit;
+    border: 1px solid var(--accent-border);
+}
+
+.service-link:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.service-more {
+    display: inline-block;
+    margin-top: 14px;
+    color: var(--accent-primary);
+    font-weight: 500;
+}
+
 /* 6. Target Section */
 .target-container {
     max-width: 800px;
@@ -736,3 +754,4 @@ ul {
         padding: 32px 24px;
     }
 }
+
