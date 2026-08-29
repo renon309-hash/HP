@@ -270,6 +270,10 @@
                             <input type="text" id="school-name" name="name" class="form-input" autocomplete="name" maxlength="100" required>
                         </div>
                         <div class="form-group">
+                            <label for="company-name" class="form-label">企業名・屋号 <span class="optional">任意</span></label>
+                            <input type="text" id="company-name" name="company_name" class="form-input" autocomplete="organization" maxlength="150" placeholder="例：株式会社○○、○○美容室、○○事務所">
+                        </div>
+                        <div class="form-group">
                             <label for="school-email" class="form-label">メールアドレス <span class="required">必須</span></label>
                             <input type="email" id="school-email" name="email" class="form-input" autocomplete="email" inputmode="email" maxlength="254" required>
                         </div>
@@ -289,6 +293,14 @@
                             <label for="problem" class="form-label">AIで効率化したい仕事・困っていること <span class="required">必須</span></label>
                             <textarea id="problem" name="problem" class="form-input form-textarea" rows="5" maxlength="2000" placeholder="例：メールの返信や見積書づくりに時間がかかっている" required></textarea>
                         </div>
+                        <fieldset class="form-group">
+                            <legend class="form-label">個別相談にも興味がありますか？ <span class="optional">任意</span></legend>
+                            <div class="choice-list choice-list-inline">
+                                <label><input type="radio" name="interested_in_consultation" value="はい"> はい</label>
+                                <label><input type="radio" name="interested_in_consultation" value="いいえ"> いいえ</label>
+                                <label><input type="radio" name="interested_in_consultation" value="まだ分からない"> まだ分からない</label>
+                            </div>
+                        </fieldset>
                         <fieldset class="form-group payment-method-group">
                             <legend class="form-label">お支払い方法 <span class="required">必須</span></legend>
                             <p class="field-help">以下からお選びください。</p>
@@ -305,14 +317,6 @@
                                     <input type="radio" name="payment_method" value="cash">
                                     <span><strong>当日現金</strong><small>当日受付で2,980円をお支払いください。</small></span>
                                 </label>
-                            </div>
-                        </fieldset>
-                        <fieldset class="form-group">
-                            <legend class="form-label">個別相談にも興味がありますか？ <span class="optional">任意</span></legend>
-                            <div class="choice-list choice-list-inline">
-                                <label><input type="radio" name="interested_in_consultation" value="はい"> はい</label>
-                                <label><input type="radio" name="interested_in_consultation" value="いいえ"> いいえ</label>
-                                <label><input type="radio" name="interested_in_consultation" value="まだ分からない"> まだ分からない</label>
                             </div>
                         </fieldset>
                         <p class="privacy-note">ご入力いただいた情報は、本講座の参加案内・お支払い案内と、ご希望の相談連絡にのみ使用します。</p>
