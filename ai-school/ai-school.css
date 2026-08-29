@@ -1,3 +1,7 @@
+[hidden] {
+    display: none !important;
+}
+
 .school-page {
     letter-spacing: 0.025em;
 }
@@ -556,6 +560,10 @@
     margin-top: 24px;
     padding-top: 24px;
     border-top: 1px solid var(--accent-border);
+}
+
+.payment-result:not([hidden]) {
+    display: block;
 }
 
 .payment-result p + p {
