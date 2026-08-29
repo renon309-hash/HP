@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>領収書兼適格請求書 作成ツール｜OfficeKit</title>
+    <meta name="description" content="OfficeKit AI仕事活用教室の領収書兼適格請求書を作成し、印刷・PDF保存するための運営者向けツールです。">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://office-kit.jp/ai-school/receipt/">
+    <link rel="icon" href="../../favicon.png" type="image/png">
+    <link rel="stylesheet" href="receipt.css?v=20260829-1">
+</head>
+<body>
+    <header class="tool-header no-print">
+        <a href="../../" class="tool-brand" aria-label="OfficeKitトップページへ">
+            <img src="../../officekit_soft_box_horizontal.png" alt="OfficeKit">
+        </a>
+        <a href="../" class="back-link">AI仕事活用教室へ戻る</a>
+    </header>
+
+    <main class="receipt-tool">
+        <section class="tool-intro no-print" aria-labelledby="tool-title">
+            <p class="eyebrow">OfficeKit INTERNAL TOOL</p>
+            <h1 id="tool-title">領収書兼適格請求書 作成ツール</h1>
+            <p>必要事項を入力すると右側の帳票へ反映されます。印刷画面で「PDFに保存」を選ぶとPDFとして保存できます。</p>
+            <p class="pc-note">印刷・PDF保存はPCからの操作を推奨します。入力内容はブラウザやサーバーへ保存されません。</p>
+        </section>
+
+        <div class="tool-layout">
+            <section class="editor-panel no-print" aria-labelledby="editor-title">
+                <h2 id="editor-title">帳票情報</h2>
+                <form id="receipt-form">
+                    <div class="field">
+                        <label for="invoice-number">帳票番号 <span>任意</span></label>
+                        <input id="invoice-number" name="invoice_number" type="text" value="AI-20261003-01" maxlength="80">
+                    </div>
+                    <div class="field">
+                        <label for="recipient">宛名 <strong>必須</strong></label>
+                        <input id="recipient" name="recipient" type="text" placeholder="例：株式会社○○ 御中、山田太郎 様" maxlength="150" required>
+                        <small>「様」「御中」は自動で付かないため、必要に応じて入力してください。</small>
+                    </div>
+                    <div class="field">
+                        <label for="company-name">企業名・屋号 <span>任意</span></label>
+                        <input id="company-name" name="company_name" type="text" placeholder="例：株式会社○○、○○美容室" maxlength="150">
+                    </div>
+                    <div class="field">
+                        <label for="payment-method">支払方法</label>
+                        <select id="payment-method" name="payment_method">
+                            <option value="credit_card">クレジットカード</option>
+                            <option value="bank_transfer">銀行振込</option>
+                            <option value="cash">現金</option>
+                        </select>
+                    </div>
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="payment-date">支払日</label>
+                            <input id="payment-date" name="payment_date" type="date" value="2026-10-03" required>
+                        </div>
+                        <div class="field">
+                            <label for="issue-date">発行日</label>
+                            <input id="issue-date" name="issue_date" type="date" value="2026-10-03" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="notes">備考 <span>任意</span></label>
+                        <textarea id="notes" name="notes" rows="3" maxlength="300" placeholder="例：クレジットカードにて支払済"></textarea>
+                    </div>
+                    <div id="registration-warning" class="warning" role="alert" tabindex="-1">
+                        適格請求書発行事業者登録番号が設定されていません。
+                    </div>
+                    <div class="actions">
+                        <button id="receipt-update" type="button" class="button button-secondary">帳票を更新</button>
+                        <button id="receipt-print" type="button" class="button button-primary" disabled>印刷・PDF保存</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="preview-panel" aria-labelledby="preview-title">
+                <h2 id="preview-title" class="no-print">帳票プレビュー</h2>
+                <article id="receipt-paper" class="receipt-paper" aria-label="領収書兼適格請求書">
+                    <header class="invoice-header">
+                        <div>
+                            <p class="invoice-kicker">AI仕事活用教室 参加費</p>
+                            <h2>領収書兼適格請求書</h2>
+                        </div>
+                        <img src="../../officekit_soft_box_horizontal.png" alt="OfficeKit" class="invoice-logo">
+                    </header>
+
+                    <div class="invoice-meta">
+                        <p>帳票番号：<span id="preview-invoice-number">AI-20261003-01</span></p>
+                        <p>発行日：<span id="preview-issue-date">2026年10月3日</span></p>
+                    </div>
+
+                    <section class="recipient-block">
+                        <p class="invoice-label">宛名</p>
+                        <p id="preview-recipient" class="recipient-name">—</p>
+                        <p id="preview-company-row" class="company-line" hidden>企業名・屋号：<span id="preview-company-name"></span></p>
+                    </section>
+
+                    <section class="amount-block">
+                        <p class="invoice-label">領収金額（税込）</p>
+                        <p id="preview-price" class="invoice-amount">¥2,980</p>
+                        <p class="paid-statement">上記金額を確かに領収しました。</p>
+                    </section>
+
+                    <dl class="invoice-details">
+                        <div><dt>取引日（役務提供日）</dt><dd id="preview-event-date">2026年10月3日</dd></div>
+                        <div><dt>支払日</dt><dd id="preview-payment-date">2026年10月3日</dd></div>
+                        <div><dt>支払方法</dt><dd id="preview-payment-method">クレジットカード</dd></div>
+                        <div><dt>取引内容</dt><dd id="preview-transaction">初心者向け ChatGPT仕事活用講座 参加費</dd></div>
+                        <div class="detail-wide"><dt>備考</dt><dd id="preview-notes">クレジットカードにて支払済</dd></div>
+                    </dl>
+
+                    <section class="tax-block" aria-label="税率別内訳">
+                        <div>
+                            <span><span id="preview-tax-rate">10%</span>対象（税込）</span>
+                            <strong id="preview-taxable-amount">2,980円</strong>
+                        </div>
+                        <div>
+                            <span>消費税額等</span>
+                            <strong id="preview-tax-amount">271円</strong>
+                        </div>
+                    </section>
+
+                    <footer class="issuer-block">
+                        <div>
+                            <p class="invoice-label">発行者</p>
+                            <p id="preview-issuer" class="issuer-name">OfficeKit</p>
+                        </div>
+                        <div>
+                            <p class="invoice-label">適格請求書発行事業者登録番号</p>
+                            <p id="preview-registration-number" class="registration-number">未設定（印刷不可）</p>
+                        </div>
+                    </footer>
+                </article>
+            </section>
+        </div>
+    </main>
+
+    <script type="module" src="receipt.js?v=20260829-1"></script>
+</body>
+</html>
+
