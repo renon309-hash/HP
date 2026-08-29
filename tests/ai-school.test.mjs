@@ -24,6 +24,8 @@ assert.match(html, /"startDate": "2026-10-03T10:00:00\+09:00"/);
 assert.match(html, /"maximumAttendeeCapacity": 8/);
 assert.match(html, /【OfficeKit】10\/3 AI仕事活用教室 参加申込/);
 assert.match(html, /name="name"[^>]*required/);
+assert.match(html, /name="company_name"/);
+assert.doesNotMatch(html, /name="company_name"[^>]*required/);
 assert.match(html, /name="email"[^>]*required/);
 assert.match(html, /name="industry"[^>]*required/);
 assert.match(html, /name="ai_experience"[^>]*required/);
@@ -32,6 +34,9 @@ assert.match(html, /name="payment_method" value="credit_card"[^>]*required/);
 assert.match(html, /name="payment_method" value="bank_transfer"/);
 assert.match(html, /name="payment_method" value="cash"/);
 assert.doesNotMatch(html, /name="interested_in_consultation"[^>]*required/);
+assert.ok(html.indexOf('name="name"') < html.indexOf('name="company_name"'));
+assert.ok(html.indexOf('name="company_name"') < html.indexOf('name="email"'));
+assert.ok(html.indexOf('name="interested_in_consultation"') < html.indexOf('name="payment_method"'));
 assert.match(html, /id="payment-result-card"[^>]*hidden/);
 assert.match(html, /id="payment-result-bank"[^>]*hidden/);
 assert.match(html, /id="payment-result-cash"[^>]*hidden/);
@@ -94,7 +99,10 @@ async function runPaymentScenario(selectedPaymentMethod, responseOk) {
     let submittedData;
     class FakeFormData {
         constructor() {
-            this.values = new Map([['payment_method', selectedPaymentMethod]]);
+            this.values = new Map([
+                ['company_name', '株式会社テスト'],
+                ['payment_method', selectedPaymentMethod]
+            ]);
         }
         get(name) { return this.values.get(name); }
         set(name, value) { this.values.set(name, value); }
@@ -127,6 +135,7 @@ async function runPaymentScenario(selectedPaymentMethod, responseOk) {
         formHidden: form.hidden,
         successHidden: elements['school-form-success'].hidden,
         errorHidden: elements['form-error'].hidden,
+        submittedCompanyName: submittedData.get('company_name'),
         submittedPaymentMethod: submittedData.get('payment_method')
     };
 }
@@ -136,6 +145,7 @@ assert.equal(creditResult.cardHidden, false);
 assert.equal(creditResult.bankHidden, true);
 assert.equal(creditResult.cashHidden, true);
 assert.equal(creditResult.stripeHref, 'https://buy.stripe.com/fZufZjb7Xcqe1vmcMtbfO00');
+assert.equal(creditResult.submittedCompanyName, '株式会社テスト');
 assert.equal(creditResult.submittedPaymentMethod, 'クレジットカード');
 
 const bankResult = await runPaymentScenario('bank_transfer', true);
