@@ -3,10 +3,10 @@
 
     const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/fZufZjb7Xcqe1vmcMtbfO00';
     const REGISTRATION_OPEN = true;
-    const PAYMENT_METHOD_CODES = {
-        'クレジットカード': 'credit_card',
-        '銀行振込': 'bank_transfer',
-        '当日現金': 'cash'
+    const PAYMENT_METHOD_LABELS = {
+        credit_card: 'クレジットカード',
+        bank_transfer: '銀行振込',
+        cash: '当日現金'
     };
     const navbar = document.getElementById('navbar');
     const form = document.getElementById('ai-school-form');
@@ -16,9 +16,9 @@
     const soldOutMessage = document.getElementById('school-sold-out');
     const stripePaymentButton = document.getElementById('stripe-payment-button');
     const paymentResults = {
-        'クレジットカード': document.getElementById('payment-result-card'),
-        '銀行振込': document.getElementById('payment-result-bank'),
-        '当日現金': document.getElementById('payment-result-cash')
+        credit_card: document.getElementById('payment-result-card'),
+        bank_transfer: document.getElementById('payment-result-bank'),
+        cash: document.getElementById('payment-result-cash')
     };
     let isSubmitting = false;
     let hasStartedForm = false;
@@ -38,12 +38,17 @@
         errorMessage.hidden = !message;
     }
 
-    function showPaymentResult(paymentMethod) {
-        Object.keys(paymentResults).forEach(function (method) {
-            paymentResults[method].hidden = true;
+    function hidePaymentResults() {
+        Object.values(paymentResults).forEach(function (result) {
+            result.hidden = true;
         });
+        stripePaymentButton.removeAttribute('href');
+    }
 
-        if (paymentMethod === 'クレジットカード') {
+    function showPaymentResult(paymentMethod) {
+        hidePaymentResults();
+
+        if (paymentMethod === 'credit_card') {
             stripePaymentButton.href = STRIPE_PAYMENT_LINK;
         }
 
@@ -92,7 +97,7 @@
         form.addEventListener('change', function (event) {
             if (event.target.name !== 'payment_method') return;
             trackEvent('ai_school_payment_method_select', {
-                payment_method: event.target.dataset.paymentCode || PAYMENT_METHOD_CODES[event.target.value]
+                payment_method: event.target.value
             });
         });
 
@@ -108,17 +113,23 @@
             event.preventDefault();
             if (!REGISTRATION_OPEN || isSubmitting || !form.reportValidity()) return;
 
-            const paymentMethod = new FormData(form).get('payment_method');
+            const selectedPaymentMethod = form.querySelector('input[name="payment_method"]:checked')?.value;
+            const submissionData = new FormData(form);
+            submissionData.set(
+                'payment_method',
+                PAYMENT_METHOD_LABELS[selectedPaymentMethod] || selectedPaymentMethod
+            );
 
             isSubmitting = true;
             setError('');
+            hidePaymentResults();
             submitButton.disabled = true;
             submitButton.textContent = '送信中…';
 
             try {
                 const response = await fetch(form.action, {
                     method: 'POST',
-                    body: new FormData(form),
+                    body: submissionData,
                     headers: { Accept: 'application/json' }
                 });
 
@@ -126,10 +137,11 @@
 
                 trackEvent('ai_school_form_submit_complete');
                 form.hidden = true;
-                showPaymentResult(paymentMethod);
                 successMessage.hidden = false;
+                showPaymentResult(selectedPaymentMethod);
                 successMessage.focus();
             } catch (error) {
+                hidePaymentResults();
                 isSubmitting = false;
                 submitButton.disabled = false;
                 submitButton.textContent = '参加を申し込む';
