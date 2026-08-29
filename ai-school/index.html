@@ -214,7 +214,7 @@
                     <details><summary>当日は何時に行けばいいですか？</summary><p>受付は9:45からです。10:00までにお越しください。</p></details>
                     <details><summary>パソコンは必要ですか？</summary><p>はい。実際に操作しながら進めるため、ノートパソコンをご持参ください。</p></details>
                     <details><summary>ChatGPTの有料版は必要ですか？</summary><p>必要ありません。無料版で参加できます。</p></details>
-                    <details><summary>料金はいつ支払いますか？</summary><p>参加申込後、メールにてお支払い方法をご案内します。</p></details>
+                    <details><summary>料金はいつ支払いますか？</summary><p>申込時に、クレジットカード・銀行振込・当日現金からお選びいただけます。クレジットカードの場合は申込完了後にStripeの決済ページから、銀行振込の場合は申込後にご案内する口座へ、当日現金の場合は受付でお支払いください。</p></details>
                     <details><summary>専門的なプログラミングも学びますか？</summary><p>この講座では扱いません。日々の仕事でAIを活用することを目的としています。</p></details>
                     <details><summary>自分の仕事について相談できますか？</summary><p>はい。講座後半で、自分の業務にAIをどう使えるか考える時間を設けます。</p></details>
                 </div>
@@ -230,6 +230,7 @@
                         <li>顧客情報、個人情報、機密情報などはAIへ入力しないようご案内します。</li>
                         <li>ChatGPT等のサービス仕様は、開催時点の内容に基づきます。</li>
                         <li>講座内容は、参加者の理解度に応じて一部変更する場合があります。</li>
+                        <li>参加が難しくなった場合は、事前にOfficeKitまでご連絡ください。</li>
                     </ul>
                 </div>
             </div>
@@ -288,6 +289,24 @@
                             <label for="problem" class="form-label">AIで効率化したい仕事・困っていること <span class="required">必須</span></label>
                             <textarea id="problem" name="problem" class="form-input form-textarea" rows="5" maxlength="2000" placeholder="例：メールの返信や見積書づくりに時間がかかっている" required></textarea>
                         </div>
+                        <fieldset class="form-group payment-method-group">
+                            <legend class="form-label">お支払い方法 <span class="required">必須</span></legend>
+                            <p class="field-help">以下からお選びください。</p>
+                            <div class="choice-list payment-choice-list">
+                                <label>
+                                    <input type="radio" name="payment_method" value="クレジットカード" data-payment-code="credit_card" required>
+                                    <span><strong>クレジットカード</strong><small>申込完了後、そのままStripeの安全な決済ページから2,980円をお支払いいただきます。</small></span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="payment_method" value="銀行振込" data-payment-code="bank_transfer">
+                                    <span><strong>銀行振込</strong><small>申込後、振込先口座をメールでご案内します。</small></span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="payment_method" value="当日現金" data-payment-code="cash">
+                                    <span><strong>当日現金</strong><small>当日受付で2,980円をお支払いください。</small></span>
+                                </label>
+                            </div>
+                        </fieldset>
                         <fieldset class="form-group">
                             <legend class="form-label">個別相談にも興味がありますか？ <span class="optional">任意</span></legend>
                             <div class="choice-list choice-list-inline">
@@ -306,7 +325,22 @@
                         <div class="success-icon" aria-hidden="true">✓</div>
                         <h3>お申し込みありがとうございます。</h3>
                         <p><strong>2026年10月3日（土）のAI仕事活用教室への参加申込を受け付けました。</strong></p>
-                        <p>参加方法・お支払い方法について、入力いただいたメールアドレス宛にご案内します。</p>
+                        <div id="payment-result-card" class="payment-result" hidden>
+                            <p>続けて、クレジットカードで参加費2,980円をお支払いください。</p>
+                            <a id="stripe-payment-button" class="btn btn-primary btn-large stripe-payment-button">クレジットカードで2,980円を支払う</a>
+                            <p class="security-note">クレジットカード決済はStripeの安全な決済ページで行われます。OfficeKitではカード番号を取得・保存しません。</p>
+                        </div>
+                        <div id="payment-result-bank" class="payment-result" hidden>
+                            <p>振込先口座について、入力いただいたメールアドレス宛にご案内します。</p>
+                        </div>
+                        <div id="payment-result-cash" class="payment-result" hidden>
+                            <p>参加費2,980円は、当日受付にて現金でお支払いください。</p>
+                            <p>受付開始は9:45です。</p>
+                        </div>
+                    </div>
+                    <div id="school-sold-out" class="sold-out-message" role="status" hidden>
+                        <h3>満席のため受付を終了しました</h3>
+                        <p>たくさんのお申し込みをありがとうございます。</p>
                     </div>
                 </div>
             </div>
