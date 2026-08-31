@@ -276,12 +276,20 @@ textarea {
     border-bottom: 1px solid var(--line);
     font-size: 16pt;
     font-weight: 700;
+    overflow-wrap: anywhere;
 }
 
 .company-line {
-    margin: 2mm 0 0;
-    color: var(--muted);
-    font-size: 9pt;
+    margin: 0;
+    font-size: 16pt;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.company-line:not([hidden]) + .recipient-name {
+    margin-top: 2mm;
+    font-size: 12pt;
+    font-weight: 400;
 }
 
 .amount-block {
