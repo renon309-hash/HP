@@ -22,8 +22,9 @@ assert.equal(EVENT_PRICE, 2980);
 assert.equal(TAX_RATE, 0.10);
 assert.equal(calculateIncludedTax(), 271);
 assert.equal(ISSUER_NAME, 'OfficeKit');
-assert.equal(INVOICE_REGISTRATION_NUMBER, '');
-assert.equal(isInvoiceRegistrationNumberValid(), false);
+assert.equal(INVOICE_REGISTRATION_NUMBER, 'T5810837830926');
+assert.equal(isInvoiceRegistrationNumberValid(), true);
+assert.equal(isInvoiceRegistrationNumberValid(''), false);
 assert.equal(isInvoiceRegistrationNumberValid('T1234567890123'), true);
 
 const model = buildReceiptModel({
@@ -46,7 +47,7 @@ assert.equal(model.taxRate, 0.10);
 assert.equal(model.taxAmount, 271);
 assert.equal(model.transactionDescription, '初心者向け ChatGPT仕事活用講座 参加費');
 assert.equal(model.issuerName, 'OfficeKit');
-assert.equal(model.registrationNumber, '');
+assert.equal(model.registrationNumber, 'T5810837830926');
 
 assert.match(html, /領収書兼適格請求書/);
 assert.match(html, /AI仕事活用教室 参加費/);
