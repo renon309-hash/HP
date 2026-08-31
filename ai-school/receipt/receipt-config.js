@@ -2,7 +2,7 @@ export const EVENT_NAME = '初心者向け ChatGPT仕事活用講座';
 export const EVENT_DATE = '2026-10-03';
 export const EVENT_PRICE = 2980;
 export const TAX_RATE = 0.10;
-export const INVOICE_REGISTRATION_NUMBER = '';
+export const INVOICE_REGISTRATION_NUMBER = 'T5810837830926';
 export const ISSUER_NAME = 'OfficeKit';
 
 export const PAYMENT_METHODS = Object.freeze({
