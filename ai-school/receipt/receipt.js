@@ -5,7 +5,7 @@ import {
     PAYMENT_METHODS,
     buildReceiptModel,
     isInvoiceRegistrationNumberValid
-} from './receipt-config.js';
+} from './receipt-config.js?v=20260831-1';
 
 const form = document.getElementById('receipt-form');
 const updateButton = document.getElementById('receipt-update');
