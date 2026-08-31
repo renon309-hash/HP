@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { runInNewContext } from 'node:vm';
+import * as receiptConfig from '../ai-school/receipt/receipt-config.js';
 import {
     EVENT_DATE,
     EVENT_NAME,
@@ -73,6 +75,42 @@ assert.match(css, /@media print/);
 assert.match(css, /\.no-print\s*{[\s\S]*display:\s*none !important/);
 assert.match(css, /max-height:\s*277mm/);
 assert.match(css, /page-break-inside:\s*avoid/);
+
+// The company is the first, prominent addressee; labels and automatic honorifics are absent.
+const recipientBlock = html.match(/<section class="recipient-block">([\s\S]*?)<\/section>/)[1];
+assert.ok(recipientBlock.indexOf('id="preview-company-row"') < recipientBlock.indexOf('id="preview-recipient"'));
+assert.doesNotMatch(recipientBlock, /企業名・屋号[：:]/);
+assert.match(css, /\.company-line\s*\{[^}]*font-size:\s*16pt/);
+assert.match(css, /\.company-line:not\(\[hidden\]\) \+ \.recipient-name\s*\{[^}]*font-size:\s*12pt/);
+assert.match(css, /\.recipient-name\s*\{[^}]*font-size:\s*16pt/);
+
+// Execute the actual renderer with a small DOM stub, including input-change updates.
+const elements = new Map([...html.matchAll(/id="([^"]+)"/g)].map(([, id]) => [id, {
+    value: id === 'payment-method' ? 'credit_card' : '',
+    textContent: '',
+    hidden: false,
+    listeners: {},
+    addEventListener(type, callback) { this.listeners[type] = callback; }
+}]));
+runInNewContext(script.replace(/^import\s*\{[\s\S]*?\}\s*from\s*'[^']+';\s*/, ''), {
+    ...receiptConfig,
+    document: { getElementById: id => elements.get(id) },
+    window: { print() {} }
+});
+for (const [companyName, recipient] of [
+    ['株式会社テスト', 'テスト太郎'],
+    ['株式会社テスト 御中', 'テスト太郎 様'],
+    ['', 'テスト太郎 様'],
+    ['   ', 'テスト太郎'],
+    ['テスト屋号', 'テスト花子']
+]) {
+    elements.get('company-name').value = companyName;
+    elements.get('recipient').value = recipient;
+    elements.get('receipt-form').listeners.input();
+    assert.equal(elements.get('preview-company-name').textContent, companyName.trim());
+    assert.equal(elements.get('preview-company-row').hidden, !companyName.trim());
+    assert.equal(elements.get('preview-recipient').textContent, recipient);
+}
 
 console.log('AI school receipt tests passed.');
 
