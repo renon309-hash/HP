@@ -1,0 +1,83 @@
+:root {
+    --blue: #1c5c9e;
+    --orange: #ff8c00;
+    --ink: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --soft: #f4f7fa;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--soft); color: var(--ink); font-family: "Meiryo", "Noto Sans JP", "Yu Gothic", sans-serif; }
+p, h1, h2, ul { margin: 0; }
+a { color: inherit; }
+.print-tools { max-width: 210mm; margin: 16px auto; padding: 0 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 14px; }
+.print-tools button, .print-tools > a { padding: 12px 16px; border: 1px solid var(--blue); border-radius: 5px; background: white; color: var(--blue); font: inherit; cursor: pointer; }
+.print-tools span { flex-basis: 100%; }
+.flyer { width: 210mm; min-height: 297mm; margin: 0 auto 24px; padding: 12mm; background: white; }
+.brand-row { height: 15mm; display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.brand-row img { width: 38mm; height: auto; }
+.brand-row p { padding-top: 3mm; font-size: 10pt; color: var(--blue); }
+.hero { padding-top: 4mm; }
+.beginner { font-size: 12pt; font-weight: 700; color: var(--blue); line-height: 1.5; }
+h1 { font-size: 27pt; line-height: 1.5; color: var(--blue); letter-spacing: -0.03em; }
+.main-copy { margin-top: 2mm; font-size: 20pt; line-height: 1.4; font-weight: 700; }
+.intro { margin-top: 3mm; font-size: 10.5pt; line-height: 1.6; }
+.learning-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; margin-top: 4mm; }
+.learning-grid section + section { border-left: 1px solid var(--line); padding-left: 6mm; }
+.learning-grid h2 { padding-bottom: 2mm; border-bottom: 2px solid var(--blue); font-size: 12pt; }
+.learning-grid ul { padding: 2mm 0 0; list-style: none; font-size: 10pt; line-height: 1.65; }
+.learning-grid li { position: relative; padding-left: 3mm; }
+.learning-grid li::before { content: "・"; position: absolute; left: 0; font-weight: 700; }
+.reassurance { margin-top: 2mm; font-size: 9.5pt; font-weight: 700; line-height: 1.6; }
+.note { font-size: 9pt; line-height: 1.6; }
+.learning-grid .note { margin-top: 2mm; }
+.event-box { margin-top: 4mm; border: 1.5px solid var(--blue); }
+.date-row { padding: 3mm 4mm 2mm; border-bottom: 1px solid var(--line); }
+.date-row p { display: flex; justify-content: space-between; gap: 3mm; align-items: baseline; line-height: 1.4; color: var(--blue); }
+.date-row strong { font-size: 19pt; }
+.date-row b { font-size: 18pt; }
+.date-row > span { display: block; text-align: right; font-size: 9pt; }
+.event-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 4mm; padding: 4mm; }
+.venue { font-size: 10pt; line-height: 1.65; }
+.venue h2 { font-size: 13pt; line-height: 1.5; }
+.access { margin: 1mm 0; font-weight: 700; font-size: 9.5pt; }
+.price-box { border-left: 1px solid var(--line); padding-left: 4mm; }
+.regular { font-size: 9pt; line-height: 1.6; }
+.monitor { display: inline-block; padding: 0.8mm 0; border-bottom: 2px solid var(--orange); font-size: 11pt; font-weight: 700; }
+.price { white-space: nowrap; line-height: 1.25; color: var(--blue); }
+.price strong { font-size: 43pt; letter-spacing: -0.05em; }
+.price span { font-size: 10pt; font-weight: 700; }
+.bottom-grid { display: grid; grid-template-columns: 1fr 65mm; gap: 6mm; margin-top: 4mm; align-items: center; }
+.organizer h2 { color: var(--blue); font-size: 13pt; margin-bottom: 2mm; }
+.organizer p { font-size: 9.5pt; line-height: 1.7; margin-top: 2mm; }
+.apply { text-align: center; }
+.apply h2 { font-size: 11pt; line-height: 1.5; color: var(--blue); }
+.apply img { display: block; width: 35mm; height: 35mm; margin: 1mm auto; }
+.apply p { font-size: 8.5pt; line-height: 1.5; }
+.apply p a { text-decoration: none; }
+@page { size: A4 portrait; margin: 12mm; }
+@media print {
+    body { background: white; }
+    .print-tools { display: none !important; }
+    .flyer { width: 186mm; min-height: 0; margin: 0; padding: 0; }
+    .flyer { break-inside: avoid; page-break-inside: avoid; }
+    a { text-decoration: none; }
+}
+@media screen and (max-width: 793px) {
+    .flyer { width: 100%; min-height: 0; padding: 20px 16px; }
+    .brand-row { height: auto; min-height: 54px; gap: 12px; }
+    .brand-row img { width: 118px; }
+    .brand-row p { font-size: 12px; }
+    h1 { font-size: clamp(23px, 5.1vw, 36px); }
+    .main-copy { font-size: clamp(20px, 4.1vw, 27px); }
+    .intro { font-size: 15px; }
+    .intro br, .organizer br { display: none; }
+    .learning-grid, .event-grid, .bottom-grid { grid-template-columns: 1fr; gap: 20px; }
+    .learning-grid section + section, .price-box { border-left: 0; padding-left: 0; }
+    .learning-grid ul, .venue { font-size: 15px; }
+    .reassurance, .note, .organizer p { font-size: 14px; }
+    .date-row p { display: block; }
+    .date-row strong, .date-row b { display: block; font-size: 23px; }
+    .date-row > span { text-align: left; font-size: 14px; }
+    .bottom-grid { margin-top: 24px; }
+}
