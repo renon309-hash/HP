@@ -197,5 +197,39 @@ assert.equal(failedResult.formHidden, false);
 assert.equal(failedResult.successHidden, true);
 assert.equal(failedResult.errorHidden, false);
 
+function runRegistrationClosedScenario() {
+    const elements = {
+        navbar: createElement(),
+        'school-submit-btn': createElement(),
+        'school-form-success': createElement(true),
+        'form-error': createElement(true),
+        'school-sold-out': createElement(true),
+        'stripe-payment-button': createElement(),
+        'payment-result-card': createElement(true),
+        'payment-result-bank': createElement(true),
+        'payment-result-cash': createElement(true)
+    };
+    const form = createElement();
+    elements['ai-school-form'] = form;
+    const ctas = [createElement(), createElement(), createElement()];
+    const document = {
+        getElementById(id) { return elements[id] || null; },
+        querySelectorAll(selector) { return selector === '.js-cta' ? ctas : []; },
+        querySelector() { return null; }
+    };
+    const window = { addEventListener() {}, dataLayer: [] };
+
+    vm.runInNewContext(
+        script.replace('const REGISTRATION_OPEN = true;', 'const REGISTRATION_OPEN = false;'),
+        { document, window, FormData, fetch: async () => ({ ok: true }), console }
+    );
+    return { formHidden: form.hidden, soldOutHidden: elements['school-sold-out'].hidden, ctas };
+}
+
+const registrationClosed = runRegistrationClosedScenario();
+assert.equal(registrationClosed.formHidden, true);
+assert.equal(registrationClosed.soldOutHidden, false);
+registrationClosed.ctas.forEach(cta => assert.equal(cta.textContent, '満席のため受付終了'));
+
 console.log('AI school tests passed.');
 
