@@ -31,6 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
     fadeElements.forEach(element => {
         observer.observe(element);
     });
+
+    // 製品ページから来た場合は、相談種別をあらかじめ選択する
+    const inquiryType = document.getElementById('inquiry-type');
+    if (inquiryType && new URLSearchParams(window.location.search).get('inquiry') === 'crm') {
+        inquiryType.value = '顧客管理システム・デモ相談';
+    }
     
     // スムーズスクロールの設定（ゆっくりとスクロール）
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

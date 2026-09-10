@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OfficeKit</title>
     <meta name="description" content="Office Kitは、AIを活用しながら、経営者が日々の業務で手を取られていることを、やさしく・実務的に整えていくサービスです。">
+    <link rel="canonical" href="https://office-kit.jp/">
     <script>
         // HTTPで開かれた場合はHTTPSへ即時リダイレクトして「保護されていない通信」を回避します
         (function () {
-            if (location.protocol === 'http:') {
+            const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+            if (location.protocol === 'http:' && !isLocal) {
                 location.replace('https://' + location.host + location.pathname + location.search + location.hash);
             }
         })();
@@ -44,6 +46,7 @@
                 <li><a href="#problems">お悩み</a></li>
                 <li><a href="#concept">コンセプト</a></li>
                 <li><a href="#services">サービス</a></li>
+                <li><a href="crm/">顧客管理システム</a></li>
                 <li><a href="#stance">私たちの姿勢</a></li>
             </ul>
             <a href="#contact" class="btn btn-primary nav-cta">相談してみる</a>
@@ -189,6 +192,15 @@
                         <span class="service-more">講座の詳細を見る →</span>
                     </div>
                 </a>
+                <a class="service-row service-link product-service fade-in-up" href="crm/" aria-label="税理士事務所向け顧客管理システムの詳細を見る">
+                    <div class="service-number text-primary">05</div>
+                    <div class="service-content">
+                        <p class="service-badge">デモ・導入相談受付中</p>
+                        <h3 class="service-title">税理士事務所向け顧客管理システム</h3>
+                        <p class="service-desc">顧客情報、申告期限、資料回収、契約・売上を一元管理。税理士事務所の実務をもとに開発した業務管理システムです。</p>
+                        <span class="service-more">詳しく見る →</span>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
@@ -262,6 +274,14 @@
                         <input type="text" id="company" name="company" class="form-input" placeholder="例：株式会社サンプル">
                     </div>
                     <div class="form-group">
+                        <label for="inquiry-type" class="form-label">お問い合わせ種別</label>
+                        <select id="inquiry-type" name="inquiry_type" class="form-input">
+                            <option value="業務整理・AI活用の相談">業務整理・AI活用の相談</option>
+                            <option value="顧客管理システム・デモ相談">顧客管理システム・デモ相談</option>
+                            <option value="その他">その他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="message" class="form-label">ご相談内容 <span class="required">*</span></label>
                         <textarea id="message" name="message" class="form-input form-textarea" rows="5" placeholder="現在お困りのことや、ご相談されたい内容をご記入ください。" required></textarea>
                     </div>
@@ -295,6 +315,7 @@
                 <a href="#problems">お悩み</a>
                 <a href="#concept">コンセプト</a>
                 <a href="#services">サービス内容</a>
+                <a href="crm/">顧客管理システム</a>
                 <a href="#stance">私たちの姿勢</a>
             </div>
         </div>
@@ -306,4 +327,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
