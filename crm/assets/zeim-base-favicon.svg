@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">ゼイムベース シンボル</title>
+  <g><path fill="#E2AD28" d="M15 72c0-3 2-5 5-6l40-15c3-1 5-1 8 0l40 15c3 1 5 3 5 6v10c0 3-2 5-5 6l-40 15c-3 1-5 1-8 0L20 88c-3-1-5-3-5-6Z"/>
+       <path fill="#134B47" d="M15 39c0-3 2-5 5-6l40-15c3-1 5-1 8 0l40 15c3 1 5 3 5 6v10c0 3-2 5-5 6L68 70c-3 1-5 1-8 0L20 55c-3-1-5-3-5-6Z"/>
+       <path fill="#134B47" d="m76 52 18 7-38 35-18-7Z"/></g>
+</svg>

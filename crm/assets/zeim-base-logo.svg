@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="180" viewBox="0 0 820 180" role="img" aria-labelledby="title">
+  <title id="title">ゼイムベース ロゴ</title>
+  <g transform="translate(28 31) scale(0.921875)"><path fill="#E2AD28" d="M13 72c0-3 2-5 5-6l41-15c3-1 7-1 10 0l41 15c3 1 5 3 5 6v9c0 3-2 5-5 6l-42 16c-3 1-6 1-9 0L18 87c-3-1-5-3-5-6Z"/>
+       <path fill="#134B47" d="M13 39c0-3 2-5 5-6l41-16c3-1 7-1 10 0l41 16c3 1 5 3 5 6v9c0 3-2 5-5 6L71 69c-4 2-10 2-14 0L18 54c-3-1-5-3-5-6Z"/>
+       <path fill="#134B47" d="m76 52 18 7-38 35-18-7Z"/></g>
+     <text x="162" y="91" fill="#134B47" font-family="'Noto Sans JP','Yu Gothic',sans-serif" font-size="72" font-weight="700" letter-spacing="1.6" dominant-baseline="middle" text-rendering="geometricPrecision">ゼイムベース</text>
+</svg>
