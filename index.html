@@ -184,6 +184,26 @@
                         <p class="service-desc">導入して終わりではなく、無理なく回る運用ルールやテンプレートづくりまで伴走します。</p>
                     </div>
                 </div>
+                <div class="ai-consultation fade-in-up" id="ai-consultation">
+                    <h3>こんな業務の整理・AI活用をご相談いただけます</h3>
+                    <p class="ai-consultation-intro">「ChatGPTなどのAIを使ってみたいけれど、自分の仕事で何に使えるのか分からない」という段階からご相談いただけます。</p>
+                    <p class="ai-consultation-intro">現在の業務や手順を伺いながら、AIを使えるところ、仕組み化できるところ、今のままの方がよいところを一緒に整理します。</p>
+                    <div class="ai-consultation-grid">
+                        <article><h4>AIの使い方</h4><p>ChatGPTなどを、日々の仕事のどこでどう使えるか整理します。</p></article>
+                        <article><h4>資料・文章作成</h4><p>メール、案内文、社内資料などの作成を、AIで手助けできる部分を確認します。</p></article>
+                        <article><h4>情報整理</h4><p>散らばっている情報や業務手順を整理し、探しやすく、共有しやすい形を考えます。</p></article>
+                        <article><h4>定型業務の効率化</h4><p>毎回同じように行う入力・転記・集計など、繰り返し作業を見直します。</p></article>
+                        <article><h4>業務ツールづくり</h4><p>必要に応じて、簡単な業務ツールや、無理なく続けられる仕組みを検討します。</p></article>
+                    </div>
+                    <h4 class="ai-consultation-flow-title">相談の流れ</h4>
+                    <ol class="ai-consultation-flow">
+                        <li><span>1</span>現在の業務・困りごとを確認</li>
+                        <li><span>2</span>AIや仕組み化が使える部分を整理</li>
+                        <li><span>3</span>実際の使い方や改善方法を提案</li>
+                    </ol>
+                    <p class="ai-consultation-note">AIを使うこと自体を目的にせず、今の仕事に合う方法を考えます。費用は内容を確認のうえご案内します。</p>
+                    <a href="#contact" class="btn btn-primary ai-consultation-cta">業務整理・AI活用について相談する</a>
+                </div>
                 <a class="service-row service-link fade-in-up" href="ai-school/" aria-label="浅草・蔵前 AI仕事活用教室の詳細を見る">
                     <div class="service-number text-primary">04</div>
                     <div class="service-content">
@@ -283,7 +303,8 @@
                     </div>
                     <div class="form-group">
                         <label for="message" class="form-label">ご相談内容 <span class="required">*</span></label>
-                        <textarea id="message" name="message" class="form-input form-textarea" rows="5" placeholder="現在お困りのことや、ご相談されたい内容をご記入ください。" required></textarea>
+                        <p class="form-help" id="message-help">業務整理・AI活用をご希望の方は、現在困っている業務や、AIを使ってみたい内容を簡単にご記入ください。</p>
+                        <textarea id="message" name="message" class="form-input form-textarea" rows="5" placeholder="現在お困りのことや、ご相談されたい内容をご記入ください。" aria-describedby="message-help" required></textarea>
                     </div>
                     <div class="contact-action">
                         <button type="submit" class="btn btn-primary btn-large" id="submit-btn">送信する</button>
