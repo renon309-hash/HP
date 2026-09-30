@@ -2,7 +2,7 @@
     'use strict';
 
     const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/fZufZjb7Xcqe1vmcMtbfO00';
-    const REGISTRATION_OPEN = true;
+    const REGISTRATION_OPEN = false;
     const PAYMENT_METHOD_LABELS = {
         credit_card: 'クレジットカード',
         bank_transfer: '銀行振込',
@@ -13,7 +13,6 @@
     const submitButton = document.getElementById('school-submit-btn');
     const successMessage = document.getElementById('school-form-success');
     const errorMessage = document.getElementById('form-error');
-    const soldOutMessage = document.getElementById('school-sold-out');
     const stripePaymentButton = document.getElementById('stripe-payment-button');
     const paymentResults = {
         credit_card: document.getElementById('payment-result-card'),
@@ -34,21 +33,22 @@
     }
 
     function setError(message) {
+        if (!errorMessage) return;
         errorMessage.textContent = message;
         errorMessage.hidden = !message;
     }
 
     function hidePaymentResults() {
         Object.values(paymentResults).forEach(function (result) {
-            result.hidden = true;
+            if (result) result.hidden = true;
         });
-        stripePaymentButton.removeAttribute('href');
+        if (stripePaymentButton) stripePaymentButton.removeAttribute('href');
     }
 
     function showPaymentResult(paymentMethod) {
         hidePaymentResults();
 
-        if (paymentMethod === 'credit_card') {
+        if (paymentMethod === 'credit_card' && stripePaymentButton) {
             stripePaymentButton.href = STRIPE_PAYMENT_LINK;
         }
 
@@ -60,17 +60,16 @@
     function applyRegistrationAvailability() {
         if (REGISTRATION_OPEN) return;
 
-        form.hidden = true;
-        soldOutMessage.hidden = false;
+        if (form) form.hidden = true;
         document.querySelectorAll('.js-cta').forEach(function (cta) {
-            cta.textContent = '満席のため受付終了';
+            cta.textContent = '次回開催準備中';
             cta.classList.add('btn-disabled');
             cta.setAttribute('aria-disabled', 'true');
         });
     }
 
     window.addEventListener('scroll', function () {
-        navbar.classList.toggle('scrolled', window.scrollY > 50);
+        if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
     }, { passive: true });
 
     document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
@@ -88,7 +87,7 @@
             if (anchor.classList.contains('js-cta')) {
                 trackEvent('ai_school_apply_click', { link_location: anchor.closest('footer') ? 'footer' : 'page' });
             }
-            const top = target.getBoundingClientRect().top + window.scrollY - navbar.offsetHeight;
+            const top = target.getBoundingClientRect().top + window.scrollY - (navbar ? navbar.offsetHeight : 0);
             window.scrollTo({ top: top, behavior: 'smooth' });
         });
     });
@@ -150,11 +149,17 @@
         });
     }
 
-    stripePaymentButton.addEventListener('click', function () {
-        trackEvent('ai_school_stripe_click', { amount: 2980, currency: 'JPY' });
-    });
+    if (stripePaymentButton) {
+        stripePaymentButton.addEventListener('click', function (event) {
+            if (!REGISTRATION_OPEN) {
+                event.preventDefault();
+                stripePaymentButton.removeAttribute('href');
+                return;
+            }
+            trackEvent('ai_school_stripe_click', { currency: 'JPY' });
+        });
+    }
 
     applyRegistrationAvailability();
     trackEvent('ai_school_lp_view', { page_path: '/ai-school/' });
 })();
-

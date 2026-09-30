@@ -6,134 +6,100 @@ const html = await readFile(new URL('../ai-school/index.html', import.meta.url),
 const script = await readFile(new URL('../ai-school/ai-school.js', import.meta.url), 'utf8');
 const css = await readFile(new URL('../ai-school/ai-school.css', import.meta.url), 'utf8');
 const home = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+const publicSource = `${html}\n${script}`;
 
 assert.match(html, /<title>浅草・蔵前 AI仕事活用教室｜OfficeKit<\/title>/);
 assert.match(html, /<link rel="canonical" href="https:\/\/office-kit\.jp\/ai-school\/">/);
-assert.match(html, /name="description"/);
-assert.match(html, /id="registration"/);
-assert.equal((html.match(/class="[^"]*js-cta/g) || []).length >= 3, true);
-assert.match(html, /2026年10月3日（土）10:00〜12:00/);
-assert.match(html, /受付開始 9:45/);
-assert.match(html, /<strong>8名<\/strong>/);
-assert.match(html, /<del>4,980円（税込）<\/del>/);
-assert.match(html, /<strong>2,980円（税込）<\/strong>/);
-assert.match(html, /ルーク会議室/);
-assert.match(html, /東京都台東区柳橋2-1-11/);
+assert.match(html, /<meta name="description" content="[^"]*次回開催/);
+assert.match(html, /<meta property="og:description" content="[^"]*次回開催/);
+assert.match(html, /次回開催準備中/);
+assert.match(html, /初心者向け ChatGPT仕事活用講座/);
+assert.match(html, /現在、次回開催に向けて[\s\S]*内容・日程を準備しています。/);
+
 assert.match(html, /難しい「プロンプト」は覚えません。/);
 assert.match(html, /画面を見せる。/);
 assert.match(html, /話しかける。/);
 assert.match(html, /資料を渡す。/);
-assert.match(html, /ChatGPT初心者なら、[\s\S]*まずはこの3つで十分です。/);
 assert.equal((html.match(/class="skill-card"/g) || []).length, 3);
-assert.equal((html.match(/class="use-case-grid"/g) || []).length, 1);
-assert.equal((html.match(/<time>/g) || []).length, 10);
-assert.match(html, /<time>10:00<\/time>[\s\S]*<time>12:00<\/time>/);
+assert.equal((html.match(/<article><h3>/g) || []).length, 6);
+assert.match(html, /id="recommended-title"/);
+assert.match(html, /<h2 id="program-title"[^>]*>講座内容（予定）<\/h2>/);
+assert.equal((html.match(/<li><strong>/g) || []).length, 8);
+assert.match(html, /次回開催時には内容が変更になる場合があります/);
+
 assert.match(html, /<h2 id="operator-title"[^>]*>講師紹介<\/h2>/);
 assert.match(html, /<h3>長谷川<\/h3>/);
 assert.match(html, /普段は税理士法人で/);
-assert.match(html, /少人数（定員8名）/);
+assert.match(html, /少人数での開催を予定/);
 assert.match(html, /個人情報・顧客情報・パスワード・機密情報/);
-assert.match(html, /クレジットカード・銀行振込・当日現金/);
+
+assert.match(html, /<h2 id="overview-title"[^>]*>次回開催 準備中<\/h2>/);
+assert.match(html, /<dt>開催日<\/dt><dd>未定<\/dd>/);
+assert.match(html, /浅草・蔵前・浅草橋周辺を予定/);
+assert.match(html, /小規模事業者・個人事業主・会社員など/);
+assert.match(html, /次回開催時にご案内します/);
+assert.match(html, /id="next-session"/);
+assert.match(html, /次回開催を準備しています/);
+
+assert.equal((html.match(/<details>/g) || []).length, 4);
+assert.match(html, /ChatGPT初心者でも参加できますか？/);
+assert.match(html, /パソコンが得意でなくても参加できますか？/);
+assert.match(html, /ChatGPTの有料プランは必要ですか？/);
+assert.match(html, /どのような内容を学びますか？/);
+
+assert.doesNotMatch(html, /<form\b|id="registration"|formsubmit\.co|stripe-payment-button|参加を申し込む|講座に申し込む/);
+assert.doesNotMatch(html, /"@type"\s*:\s*"Event"|startDate|endDate|maximumAttendeeCapacity/);
+assert.doesNotMatch(publicSource, /2026年10月3日|2026-10-03|10\/3|2,980円|2980|4,980円|4980|ルーク会議室|10:00|9:45/);
+assert.doesNotMatch(html, /満席|受付終了|予約が入らなかった|参加者が集まらなかった/);
+assert.doesNotMatch(html, /事前登録|メルマガ|LINE登録/);
+
+assert.match(script, /const REGISTRATION_OPEN = false/);
+assert.match(script, /if \(!REGISTRATION_OPEN \|\| isSubmitting \|\| !form\.reportValidity\(\)\) return/);
+assert.match(script, /if \(stripePaymentButton\)/);
+assert.match(script, /event\.preventDefault\(\);[\s\S]*stripePaymentButton\.removeAttribute\('href'\)/);
+assert.doesNotMatch(script, /sk_live_|rk_live_|whsec_/);
+
+assert.match(css, /\.three-skills-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3,/);
+assert.match(css, /@media \(max-width: 768px\)[\s\S]*\.three-skills-grid,[\s\S]*grid-template-columns:\s*1fr/);
+assert.match(css, /\.program-list/);
+assert.match(css, /\.next-session-card/);
+assert.match(home, /href="ai-school\/"/);
+
 assert.ok(html.indexOf('id="three-skills-title"') < html.indexOf('id="use-cases-title"'));
 assert.ok(html.indexOf('id="use-cases-title"') < html.indexOf('id="recommended-title"'));
-assert.ok(html.indexOf('id="recommended-title"') < html.indexOf('id="agenda-title"'));
-assert.ok(html.indexOf('id="agenda-title"') < html.indexOf('id="operator-title"'));
+assert.ok(html.indexOf('id="recommended-title"') < html.indexOf('id="program-title"'));
+assert.ok(html.indexOf('id="program-title"') < html.indexOf('id="operator-title"'));
 assert.ok(html.indexOf('id="operator-title"') < html.indexOf('id="reassurance-title"'));
 assert.ok(html.indexOf('id="reassurance-title"') < html.indexOf('id="course-overview"'));
 assert.ok(html.indexOf('id="course-overview"') < html.indexOf('id="faq-title"'));
-assert.ok(html.indexOf('id="faq-title"') < html.indexOf('id="registration"'));
-assert.match(css, /\.three-skills-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3,/);
-assert.match(css, /@media \(max-width: 768px\)[\s\S]*\.three-skills-grid,[\s\S]*grid-template-columns:\s*1fr/);
-assert.doesNotMatch(html, /次回開催日は現在調整中|事前登録/);
-assert.match(html, /"@type": "Event"/);
-assert.match(html, /"startDate": "2026-10-03T10:00:00\+09:00"/);
-assert.match(html, /"maximumAttendeeCapacity": 8/);
-assert.match(html, /【OfficeKit】10\/3 AI仕事活用教室 参加申込/);
-assert.match(html, /name="name"[^>]*required/);
-assert.match(html, /name="company_name"/);
-assert.doesNotMatch(html, /name="company_name"[^>]*required/);
-assert.match(html, /name="email"[^>]*required/);
-assert.match(html, /name="industry"[^>]*required/);
-assert.match(html, /name="ai_experience"[^>]*required/);
-assert.match(html, /name="problem"[^>]*required/);
-assert.match(html, /name="payment_method" value="credit_card"[^>]*required/);
-assert.match(html, /name="payment_method" value="bank_transfer"/);
-assert.match(html, /name="payment_method" value="cash"/);
-assert.doesNotMatch(html, /name="interested_in_consultation"[^>]*required/);
-assert.ok(html.indexOf('name="name"') < html.indexOf('name="company_name"'));
-assert.ok(html.indexOf('name="company_name"') < html.indexOf('name="email"'));
-assert.ok(html.indexOf('name="interested_in_consultation"') < html.indexOf('name="payment_method"'));
-assert.match(html, /id="payment-result-card"[^>]*hidden/);
-assert.match(html, /id="payment-result-bank"[^>]*hidden/);
-assert.match(html, /id="payment-result-cash"[^>]*hidden/);
-assert.match(html, /id="stripe-payment-button"/);
-assert.doesNotMatch(html, /buy\.stripe\.com/);
-assert.match(script, /if \(!REGISTRATION_OPEN \|\| isSubmitting \|\| !form\.reportValidity\(\)\) return/);
-assert.match(script, /submitButton\.disabled = true/);
-assert.match(script, /ai_school_form_submit_complete/);
-assert.match(script, /ai_school_apply_click/);
-assert.match(script, /const STRIPE_PAYMENT_LINK = 'https:\/\/buy\.stripe\.com\/fZufZjb7Xcqe1vmcMtbfO00'/);
-assert.match(script, /const REGISTRATION_OPEN = true/);
-assert.match(script, /ai_school_payment_method_select/);
-assert.match(script, /ai_school_stripe_click/);
-assert.match(script, /if \(paymentMethod === 'credit_card'\)/);
-assert.match(script, /stripePaymentButton\.href = STRIPE_PAYMENT_LINK/);
-assert.match(script, /showPaymentResult\(selectedPaymentMethod\)/);
-assert.doesNotMatch(script, /sk_live_|rk_live_|whsec_/);
-assert.match(home, /href="ai-school\/"/);
+assert.ok(html.indexOf('id="faq-title"') < html.indexOf('id="next-session"'));
 
-function createElement(initialHidden = false) {
+function createElement() {
     const listeners = {};
-    const attributes = {};
     return {
-        hidden: initialHidden,
-        disabled: false,
-        textContent: '',
+        hidden: false,
         href: '',
         listeners,
         classList: { add() {}, toggle() {} },
         addEventListener(type, listener) { listeners[type] = listener; },
-        removeAttribute(name) {
-            delete attributes[name];
-            if (name === 'href') this.href = '';
-        },
-        setAttribute(name, value) { attributes[name] = value; },
-        focus() { this.focused = true; }
+        removeAttribute(name) { if (name === 'href') this.href = ''; },
+        setAttribute() {}
     };
 }
 
-async function runPaymentScenario(selectedPaymentMethod, responseOk) {
-    const elements = {
-        navbar: createElement(),
-        'school-submit-btn': createElement(),
-        'school-form-success': createElement(true),
-        'form-error': createElement(true),
-        'school-sold-out': createElement(true),
-        'stripe-payment-button': createElement(),
-        'payment-result-card': createElement(true),
-        'payment-result-bank': createElement(true),
-        'payment-result-cash': createElement(true)
-    };
+function runClosedRegistrationScenario() {
+    const navbar = createElement();
     const form = createElement();
-    form.action = 'https://formsubmit.co/example';
-    form.reportValidity = () => true;
-    form.querySelector = (selector) => selector.includes(':checked')
-        ? { value: selectedPaymentMethod }
-        : null;
-    elements['ai-school-form'] = form;
+    const stripeButton = createElement();
+    stripeButton.href = 'https://example.invalid/payment';
+    let fetchCalls = 0;
+    let stripeNavigationPrevented = false;
 
-    let submittedData;
-    class FakeFormData {
-        constructor() {
-            this.values = new Map([
-                ['company_name', '株式会社テスト'],
-                ['payment_method', selectedPaymentMethod]
-            ]);
-        }
-        get(name) { return this.values.get(name); }
-        set(name, value) { this.values.set(name, value); }
-    }
-
+    const elements = {
+        navbar,
+        'ai-school-form': form,
+        'stripe-payment-button': stripeButton
+    };
     const document = {
         getElementById(id) { return elements[id] || null; },
         querySelectorAll() { return []; },
@@ -145,91 +111,36 @@ async function runPaymentScenario(selectedPaymentMethod, responseOk) {
         scrollY: 0,
         scrollTo() {}
     };
-    const fetch = async (_url, options) => {
-        submittedData = options.body;
-        return { ok: responseOk };
+    const fetch = async () => {
+        fetchCalls += 1;
+        return { ok: true };
     };
 
-    vm.runInNewContext(script, { document, window, FormData: FakeFormData, fetch, console });
-    await form.listeners.submit({ preventDefault() {} });
+    vm.runInNewContext(script, { document, window, FormData, fetch, console });
+    form.listeners.submit({ preventDefault() {} });
+    stripeButton.listeners.click({ preventDefault() { stripeNavigationPrevented = true; } });
 
-    return {
-        cardHidden: elements['payment-result-card'].hidden,
-        bankHidden: elements['payment-result-bank'].hidden,
-        cashHidden: elements['payment-result-cash'].hidden,
-        stripeHref: elements['stripe-payment-button'].href,
-        formHidden: form.hidden,
-        successHidden: elements['school-form-success'].hidden,
-        errorHidden: elements['form-error'].hidden,
-        submittedCompanyName: submittedData.get('company_name'),
-        submittedPaymentMethod: submittedData.get('payment_method')
-    };
+    return { form, stripeButton, fetchCalls, stripeNavigationPrevented, events: window.dataLayer };
 }
 
-const creditResult = await runPaymentScenario('credit_card', true);
-assert.equal(creditResult.cardHidden, false);
-assert.equal(creditResult.bankHidden, true);
-assert.equal(creditResult.cashHidden, true);
-assert.equal(creditResult.stripeHref, 'https://buy.stripe.com/fZufZjb7Xcqe1vmcMtbfO00');
-assert.equal(creditResult.submittedCompanyName, '株式会社テスト');
-assert.equal(creditResult.submittedPaymentMethod, 'クレジットカード');
+const closed = runClosedRegistrationScenario();
+assert.equal(closed.form.hidden, true);
+assert.equal(closed.fetchCalls, 0);
+assert.equal(closed.stripeNavigationPrevented, true);
+assert.equal(closed.stripeButton.href, '');
+assert.equal(closed.events.some(item => item.event === 'ai_school_lp_view'), true);
 
-const bankResult = await runPaymentScenario('bank_transfer', true);
-assert.equal(bankResult.cardHidden, true);
-assert.equal(bankResult.bankHidden, false);
-assert.equal(bankResult.cashHidden, true);
-assert.equal(bankResult.stripeHref, '');
-assert.equal(bankResult.submittedPaymentMethod, '銀行振込');
-
-const cashResult = await runPaymentScenario('cash', true);
-assert.equal(cashResult.cardHidden, true);
-assert.equal(cashResult.bankHidden, true);
-assert.equal(cashResult.cashHidden, false);
-assert.equal(cashResult.stripeHref, '');
-assert.equal(cashResult.submittedPaymentMethod, '当日現金');
-
-const failedResult = await runPaymentScenario('credit_card', false);
-assert.equal(failedResult.cardHidden, true);
-assert.equal(failedResult.bankHidden, true);
-assert.equal(failedResult.cashHidden, true);
-assert.equal(failedResult.stripeHref, '');
-assert.equal(failedResult.formHidden, false);
-assert.equal(failedResult.successHidden, true);
-assert.equal(failedResult.errorHidden, false);
-
-function runRegistrationClosedScenario() {
-    const elements = {
-        navbar: createElement(),
-        'school-submit-btn': createElement(),
-        'school-form-success': createElement(true),
-        'form-error': createElement(true),
-        'school-sold-out': createElement(true),
-        'stripe-payment-button': createElement(),
-        'payment-result-card': createElement(true),
-        'payment-result-bank': createElement(true),
-        'payment-result-cash': createElement(true)
-    };
-    const form = createElement();
-    elements['ai-school-form'] = form;
-    const ctas = [createElement(), createElement(), createElement()];
+function runPageWithoutRegistrationMarkup() {
+    const navbar = createElement();
     const document = {
-        getElementById(id) { return elements[id] || null; },
-        querySelectorAll(selector) { return selector === '.js-cta' ? ctas : []; },
+        getElementById(id) { return id === 'navbar' ? navbar : null; },
+        querySelectorAll() { return []; },
         querySelector() { return null; }
     };
-    const window = { addEventListener() {}, dataLayer: [] };
-
-    vm.runInNewContext(
-        script.replace('const REGISTRATION_OPEN = true;', 'const REGISTRATION_OPEN = false;'),
-        { document, window, FormData, fetch: async () => ({ ok: true }), console }
-    );
-    return { formHidden: form.hidden, soldOutHidden: elements['school-sold-out'].hidden, ctas };
+    const window = { addEventListener() {}, dataLayer: [], scrollY: 0, scrollTo() {} };
+    assert.doesNotThrow(() => vm.runInNewContext(script, { document, window, FormData, fetch: async () => ({ ok: true }), console }));
 }
 
-const registrationClosed = runRegistrationClosedScenario();
-assert.equal(registrationClosed.formHidden, true);
-assert.equal(registrationClosed.soldOutHidden, false);
-registrationClosed.ctas.forEach(cta => assert.equal(cta.textContent, '満席のため受付終了'));
+runPageWithoutRegistrationMarkup();
 
-console.log('AI school tests passed.');
-
+console.log('AI school evergreen-page tests passed.');
