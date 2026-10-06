@@ -27,9 +27,9 @@
 .problem-answer { margin-top:42px; text-align:center; font-size:1.12rem; line-height:2; }
 .problem-answer strong { color:var(--accent-primary); }
 .product-video-section { background:#fff; }
-.product-video-frame { width:min(100%,1000px); margin:38px auto 0; overflow:hidden; border:1px solid var(--accent-border); border-radius:var(--radius-lg); background:#0f3936; box-shadow:0 24px 60px rgba(17,47,76,.12); aspect-ratio:16/9; }
-.product-video-frame video { display:block; width:100%; height:100%; object-fit:contain; }
-.product-video-note { width:min(100%,1000px); margin:14px auto 0; color:var(--text-muted); font-size:.78rem; line-height:1.7; text-align:right; }
+.product-video-frame { width:100%; max-width:100%; margin:38px auto 0; overflow:hidden; border:1px solid var(--accent-border); border-radius:var(--radius-lg); background:#0f3936; box-shadow:0 24px 60px rgba(17,47,76,.12); aspect-ratio:16/9; }
+.product-video-frame video { display:block; width:100%; max-width:100%; height:auto; aspect-ratio:16/9; object-fit:contain; }
+.product-video-note { width:100%; max-width:100%; margin:14px auto 0; color:var(--text-muted); font-size:.78rem; line-height:1.7; text-align:right; }
 .capability-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
 .capability-card { position:relative; padding:38px; background:#fff; border:1px solid var(--accent-border); border-radius:var(--radius-lg); box-shadow:var(--shadow-soft); }
 .capability-card>b { display:block; color:var(--accent-secondary); font-size:.78rem; letter-spacing:.12em; margin-bottom:12px; }
